@@ -166,7 +166,7 @@ export default function FrostPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden"
+    <div className="fixed inset-0 flex items-center justify-center"
       style={{ background: "var(--night)" }}>
 
       {/* Background layers */}
@@ -199,10 +199,9 @@ export default function FrostPage() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative z-10 flex flex-col w-full"
         style={{
-          maxWidth: 560,
+          maxWidth: 600,
           height: "100vh",
-          maxHeight: 800,
-          margin: "0 auto",
+          padding: "0",
         }}
       >
         {/* Top bar */}
