@@ -31,7 +31,10 @@ const QUESTIONS = [
   { phase: 2, key: "logo", text: "Do you already have a logo and brand identity?\n\nIf yes — great, we'll work with it. If not — would you like us to create one as part of the project?" },
   // SERVICE LOOP starts here — handled by serviceMode state
   { phase: 3, key: "services", text: "Now let's build out your services. 🏢\n\nLet's go one by one. What's the name of your first service or product?" },
-  { phase: 3, key: "client_process", text: "Walk me through your process for taking on a new client — from first contact to completed job.\n\n→ How does a client first reach out to you?\n→ Do you offer a free consultation or estimate, or is there a fee?\n→ What happens after they agree?\n→ How do you deliver the final result?" },
+  { phase: 3, key: "process_contact", text: "Now let's talk about how you work with clients. 🤝\n\nHow does a new client first reach out to you? (e.g. phone call, contact form, DM, referral...)" },
+  { phase: 3, key: "process_estimate", text: "Do you offer a free consultation or estimate, or is there a fee for that?\n\nTell me how that first meeting or quote works." },
+  { phase: 3, key: "process_onboarding", text: "What happens after a client agrees to work with you?\n\nWalk me through the steps — from signing on to getting started." },
+  { phase: 3, key: "process_delivery", text: "How do you deliver the final result to your client?\n\nAnd is there any follow-up, guarantee, or aftercare included?" },
   { phase: 3, key: "differentiators", text: "What makes you different from your competitors?\n\nWhy do clients choose you over others? What do you do better, faster, or differently?" },
   { phase: 4, key: "content", text: "For the website content — do you have the copy (text) written, or will you need help writing it?\n\nAnd do you have professional photos, or will we need to source or create them?" },
   { phase: 4, key: "domain", text: "Do you have a domain name already? (e.g. yourbusiness.com)\n\nAnd do you have hosting set up, or will you need that too?" },
@@ -69,7 +72,10 @@ Logo/Brand: ${answers.logo || "—"}
 
 🏢 THEIR BUSINESS
 ${answers.services_list || "—"}
-Client process & estimates: ${answers.client_process || "—"}
+How clients reach out: ${answers.process_contact || "—"}
+Consultation / estimate: ${answers.process_estimate || "—"}
+Onboarding process: ${answers.process_onboarding || "—"}
+Delivery & aftercare: ${answers.process_delivery || "—"}
 What makes them different: ${answers.differentiators || "—"}
 
 📋 PROJECT DETAILS
