@@ -35,7 +35,9 @@ const QUESTIONS = [
   { phase: 3, key: "process_onboarding", text: (a: Record<string,string>) => `${a.process_estimate?.toLowerCase().includes("free") ? "A free estimate — smart, clients love that! 🙌" : "Interesting approach!"}\n\nWhat happens after a client says yes and decides to move forward?\n\nWalk me through your onboarding — contracts, deposits, kickoff calls, anything like that.` },
   { phase: 3, key: "process_delivery", text: "Love the process! Almost like a well-oiled machine. ⚙️\n\nLast piece — how do you deliver the final result to your client? And do you offer any follow-up, guarantee, or aftercare?" },
   { phase: 3, key: "differentiators", text: (a: Record<string,string>) => `This is really shaping up! I feel like I already know ${a.business_name} pretty well. 😄\n\nLast question in this section — what makes you different from your competitors?\n\nWhy do clients pick YOU over everyone else? What do you do better, faster, or differently?` },
-  { phase: 4, key: "contact_info", text: (a: Record<string,string>) => `Before we wrap up the details, I need your contact info so our team can reach you! 📬\n\nWhat's the best way to get in touch with you, ${a.name}?\n\nPlease share:\n→ Your email address\n→ Your phone number\n→ Your main social media profiles (Instagram, Facebook, LinkedIn, etc.)` },
+  { phase: 4, key: "contact_email", text: (a: Record<string,string>) => `Before we get into the project details, I need your contact info so our team can reach you! 📬\n\nWhat's your email address, ${a.name}?` },
+  { phase: 4, key: "contact_phone", text: "Perfect! And what's the best phone number to reach you?" },
+  { phase: 4, key: "contact_social", text: "Last contact question — what are your social media profiles? (Instagram, Facebook, LinkedIn, TikTok... whatever you're active on)\n\nJust drop the handles or URLs!" },
   { phase: 4, key: "content", text: "You're doing great — almost there! 🎉\n\nLet's talk content. Do you already have the text/copy written for the website, or will you need help with that?\n\nAnd what about photos — do you have professional images, or will we need to source or create them?" },
   { phase: 4, key: "domain", text: "Perfect! Do you already have a domain name? (e.g. yourbusiness.com)\n\nAnd do you have hosting set up, or will you need that handled too?" },
   { phase: 4, key: "competitors", text: "Great! One thing that really helps us build a standout site — knowing who you're up against.\n\nWho are your main competitors online? Drop their URLs if you can. We'll make sure your site leaves them in the dust. 😎" },
@@ -79,7 +81,9 @@ Delivery & aftercare: ${answers.process_delivery || "—"}
 What makes them different: ${answers.differentiators || "—"}
 
 📋 PROJECT DETAILS
-Contact info (email / phone / social): ${answers.contact_info || "—"}
+Email: ${answers.contact_email || "—"}
+Phone: ${answers.contact_phone || "—"}
+Social media: ${answers.contact_social || "—"}
 Content/Copy: ${answers.content || "—"}
 Domain/Hosting: ${answers.domain || "—"}
 Competitors: ${answers.competitors || "—"}
