@@ -16,7 +16,7 @@ const PHASES = [
 
 // "services" key triggers the service loop — handled separately
 const QUESTIONS = [
-  { phase: 0, key: "name", text: "Hey there! 👋 I'm Frost, your project guide at Market Open Media.\n\nI'm going to ask you a few questions so our team can build something truly amazing for your business. It only takes a few minutes and it makes a huge difference.\n\nLet's kick things off — what's your name?" },
+  { phase: 0, key: "name", text: "Hey there! 👋 I'm Blu, your project guide at Market Open Media.\n\nI'm going to ask you a few questions so our team can build something truly amazing for your business. It only takes a few minutes and it makes a huge difference.\n\nLet's kick things off — what's your name?" },
   { phase: 0, key: "business_name", text: (a: Record<string,string>) => `${a.name}, love that name! 😄\n\nWhat's the name of your business or project?` },
   { phase: 0, key: "business_description", text: (a: Record<string,string>) => `Ooh, ${a.business_name} — already sounds interesting! ✨\n\nTell me a bit more about it. What do you offer and who do you help? Don't worry about being formal — just tell me like you'd explain it to a friend.` },
   { phase: 0, key: "target_audience", text: (a: Record<string,string>) => `I love that! ${a.business_name} sounds like exactly the kind of business that deserves a great online presence.\n\nNow — who are your ideal customers? Tell me about them. Industry, location, age range, what problems they bring to you... the more specific, the better!` },
@@ -90,10 +90,10 @@ Timeline: ${answers.timeline || "—"}
 Extra notes: ${answers.extra || "—"}
 
 ========================================
-Sent from Market Open Media — Frost intake page`.trim();
+Sent from Market Open Media — Blu intake page`.trim();
 }
 
-export default function FrostPage() {
+export default function BluPage() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -274,10 +274,10 @@ export default function FrostPage() {
               style={{ border: "1.5px solid rgba(175,169,236,0.4)", boxShadow: "0 0 20px rgba(83,74,183,0.4)" }}
               animate={{ boxShadow: ["0 0 20px rgba(83,74,183,0.3)", "0 0 35px rgba(83,74,183,0.6)", "0 0 20px rgba(83,74,183,0.3)"] }}
               transition={{ duration: 3, repeat: Infinity }}>
-              <Image src="/frost-avatar.png" alt="Frost" width={40} height={40} className="object-cover" />
+              <Image src="/blu-avatar.png" alt="Blu" width={40} height={40} className="object-cover" />
             </motion.div>
             <div>
-              <p className="font-semibold text-sm" style={{ color: "var(--snow)" }}>Frost</p>
+              <p className="font-semibold text-sm" style={{ color: "var(--snow)" }}>Blu</p>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full" style={{ background: "var(--aurora-teal)" }} />
                 <p className="text-xs" style={{ color: "var(--aurora-teal)" }}>Online · Market Open Media</p>
@@ -316,7 +316,7 @@ export default function FrostPage() {
                 {m.role === "assistant" && (
                   <div className="w-7 h-7 rounded-full overflow-hidden shrink-0 mb-0.5"
                     style={{ border: "1px solid rgba(175,169,236,0.3)" }}>
-                    <Image src="/frost-avatar.png" alt="Frost" width={28} height={28} className="object-cover" />
+                    <Image src="/blu-avatar.png" alt="Blu" width={28} height={28} className="object-cover" />
                   </div>
                 )}
                 <div className="px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-line"
