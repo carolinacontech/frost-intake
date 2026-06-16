@@ -303,7 +303,7 @@ export default function FrostPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-5 py-2 flex flex-col gap-4" style={{ scrollbarWidth: "none" }}>
+        <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-4" style={{ scrollbarWidth: "none" }}>
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
               <motion.div key={i}
