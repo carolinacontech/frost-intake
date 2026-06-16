@@ -118,23 +118,37 @@ const UI = {
     online: "Online · Market Open Media",
     placeholder: "Type your answer...",
     send: "Send my brief to Market Open Media",
+    sending: "Sending...",
+    sent: "✓ Brief sent! We'll be in touch soon.",
+    sendError: "Something went wrong. Copy your brief and email us directly.",
     copy: "Copy brief to clipboard",
     copied: "✓ Copied!",
     meetBlu: "Meet Blu",
     tagline: "Your project guide at Market Open Media",
     start: "Let's get started →",
     selectLang: "Choose your language",
+    attachFiles: "📎 Attach files (optional)",
+    attachedFiles: "Attached files:",
+    logoHint: "You can attach your logo or brand files here",
+    imageryHint: "You can attach reference images or photos here",
   },
   es: {
     online: "En línea · Market Open Media",
     placeholder: "Escribe tu respuesta...",
     send: "Enviar mi resumen a Market Open Media",
+    sending: "Enviando...",
+    sent: "✓ ¡Resumen enviado! Nos pondremos en contacto pronto.",
+    sendError: "Algo salió mal. Copia tu resumen y escríbenos directamente.",
     copy: "Copiar resumen al portapapeles",
     copied: "✓ ¡Copiado!",
     meetBlu: "Conoce a Blu",
     tagline: "Tu guía de proyectos en Market Open Media",
     start: "¡Empecemos →",
     selectLang: "Elige tu idioma",
+    attachFiles: "📎 Adjuntar archivos (opcional)",
+    attachedFiles: "Archivos adjuntos:",
+    logoHint: "Puedes adjuntar tu logo o archivos de marca aquí",
+    imageryHint: "Puedes adjuntar imágenes de referencia o fotos aquí",
   },
 };
 
@@ -196,6 +210,11 @@ export default function BluPage() {
   const [input, setInput] = useState("");
   const [done, setDone] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState<{ label: string; file: File }[]>([]);
+  const [sending, setSending] = useState(false);
+  const [sent, setSent] = useState(false);
+  const [sendError, setSendError] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [serviceMode, setServiceMode] = useState(false);
   const [serviceStep, setServiceStep] = useState<ServiceStep>("name");
   const [serviceCount, setServiceCount] = useState(0);
@@ -312,7 +331,38 @@ export default function BluPage() {
   };
 
   const summary = buildSummary(answers);
-  const mailtoHref = `mailto:marketopenmedia@gmail.com?subject=New project inquiry — ${answers.business_name || "Website project"}&body=${encodeURIComponent(summary)}`;
+
+  const UPLOAD_KEYS = ["logo", "imagery"];
+  const uploadHint = currentQ?.key === "logo" ? ui?.logoHint : ui?.imageryHint;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const label = currentQ?.key === "logo" ? "Logo" : "Reference image";
+    const files = Array.from(e.target.files || []).map(file => ({ label, file }));
+    setUploadedFiles(prev => [...prev, ...files]);
+    e.target.value = "";
+  };
+
+  const removeFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSend = async () => {
+    setSending(true);
+    setSendError(false);
+    const fd = new FormData();
+    fd.append("summary", summary);
+    fd.append("businessName", answers.business_name || "");
+    uploadedFiles.forEach(({ file }) => fd.append("files", file));
+    try {
+      const res = await fetch("/api/send", { method: "POST", body: fd });
+      if (!res.ok) throw new Error();
+      setSent(true);
+    } catch {
+      setSendError(true);
+    } finally {
+      setSending(false);
+    }
+  };
 
   const handleCopy = () => {
     navigator.clipboard.writeText(summary);
@@ -463,11 +513,21 @@ export default function BluPage() {
         <div className="px-5 pb-5 pt-3 shrink-0">
           {done ? (
             <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-3">
-              <a href={mailtoHref}
-                className="w-full py-3.5 rounded-full font-semibold text-sm text-center block transition-transform hover:scale-[1.02]"
-                style={{ background: "linear-gradient(135deg, var(--aurora), #6B5CE7)", color: "var(--snow)", boxShadow: "0 0 40px rgba(83,74,183,0.45)" }}>
-                📨 {ui.send}
-              </a>
+              {sent ? (
+                <div className="w-full py-3.5 rounded-full font-semibold text-sm text-center"
+                  style={{ background: "rgba(93,202,165,0.15)", color: "var(--aurora-teal)", border: "1px solid rgba(93,202,165,0.4)" }}>
+                  {ui.sent}
+                </div>
+              ) : (
+                <motion.button onClick={handleSend} disabled={sending} whileHover={{ scale: sending ? 1 : 1.02 }} whileTap={{ scale: 0.97 }}
+                  className="w-full py-3.5 rounded-full font-semibold text-sm text-center transition-opacity"
+                  style={{ background: "linear-gradient(135deg, var(--aurora), #6B5CE7)", color: "var(--snow)", boxShadow: "0 0 40px rgba(83,74,183,0.45)", opacity: sending ? 0.7 : 1 }}>
+                  {sending ? `⏳ ${ui.sending}` : `📨 ${ui.send}`}
+                </motion.button>
+              )}
+              {sendError && (
+                <p className="text-xs text-center" style={{ color: "#f87171" }}>{ui.sendError}</p>
+              )}
               <button onClick={handleCopy}
                 className="w-full py-3.5 rounded-full font-semibold text-sm text-center transition-all"
                 style={{ background: "rgba(83,74,183,0.12)", color: copied ? "var(--aurora-teal)" : "var(--aurora-light)", border: `1px solid ${copied ? "rgba(93,202,165,0.4)" : "rgba(83,74,183,0.25)"}` }}>
@@ -475,19 +535,43 @@ export default function BluPage() {
               </button>
             </motion.div>
           ) : (
-            <div className="flex gap-2 items-center"
-              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(83,74,183,0.25)", borderRadius: 99, padding: "6px 6px 6px 18px", backdropFilter: "blur(12px)" }}>
-              <input ref={inputRef} value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendAnswer(); } }}
-                placeholder={ui.placeholder}
-                className="flex-1 bg-transparent text-sm outline-none"
-                style={{ color: "var(--snow)" }} />
-              <motion.button onClick={sendAnswer} whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}
-                className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-bold"
-                style={{ background: input.trim() ? "linear-gradient(135deg, var(--aurora), #6B5CE7)" : "rgba(83,74,183,0.2)", color: "var(--snow)", transition: "background 0.2s", boxShadow: input.trim() ? "0 0 20px rgba(83,74,183,0.4)" : "none" }}>
-                →
-              </motion.button>
+            <div className="flex flex-col gap-2">
+              {/* File upload for logo and imagery questions */}
+              {lang && UPLOAD_KEYS.includes(currentQ?.key) && (
+                <div className="flex flex-col gap-1.5">
+                  <p className="text-xs px-1" style={{ color: "rgba(175,169,236,0.5)" }}>{uploadHint}</p>
+                  <div className="flex flex-wrap gap-1.5 items-center">
+                    {uploadedFiles.filter(f => f.label === (currentQ?.key === "logo" ? "Logo" : "Reference image")).map((f, i) => (
+                      <div key={i} className="flex items-center gap-1 px-2 py-1 rounded-full text-xs"
+                        style={{ background: "rgba(83,74,183,0.18)", color: "var(--aurora-light)", border: "1px solid rgba(83,74,183,0.3)", maxWidth: 160, overflow: "hidden" }}>
+                        <span className="truncate">{f.file.name}</span>
+                        <button onClick={() => removeFile(uploadedFiles.indexOf(f))}
+                          className="shrink-0 ml-0.5 opacity-60 hover:opacity-100" style={{ fontSize: 14, lineHeight: 1 }}>×</button>
+                      </div>
+                    ))}
+                    <label className="flex items-center gap-1.5 px-3 py-1.5 rounded-full cursor-pointer text-xs font-medium transition-all hover:opacity-80"
+                      style={{ background: "rgba(83,74,183,0.12)", color: "var(--aurora-light)", border: "1px solid rgba(83,74,183,0.25)" }}>
+                      <input ref={fileInputRef} type="file" multiple accept="image/*,.pdf,.ai,.svg,.eps,.png,.jpg,.jpeg,.webp" className="hidden"
+                        onChange={handleFileChange} />
+                      {ui.attachFiles}
+                    </label>
+                  </div>
+                </div>
+              )}
+              <div className="flex gap-2 items-center"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(83,74,183,0.25)", borderRadius: 99, padding: "6px 6px 6px 18px", backdropFilter: "blur(12px)" }}>
+                <input ref={inputRef} value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendAnswer(); } }}
+                  placeholder={ui.placeholder}
+                  className="flex-1 bg-transparent text-sm outline-none"
+                  style={{ color: "var(--snow)" }} />
+                <motion.button onClick={sendAnswer} whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.94 }}
+                  className="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-bold"
+                  style={{ background: input.trim() ? "linear-gradient(135deg, var(--aurora), #6B5CE7)" : "rgba(83,74,183,0.2)", color: "var(--snow)", transition: "background 0.2s", boxShadow: input.trim() ? "0 0 20px rgba(83,74,183,0.4)" : "none" }}>
+                  →
+                </motion.button>
+              </div>
             </div>
           )}
         </div>
