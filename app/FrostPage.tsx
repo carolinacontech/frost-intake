@@ -307,7 +307,7 @@ export default function FrostPage() {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-5 py-5 flex flex-col gap-4" style={{ scrollbarWidth: "none" }}>
+        <div className="flex-1 overflow-y-auto px-5 pt-8 pb-4 flex flex-col gap-4" style={{ scrollbarWidth: "none" }}>
           <AnimatePresence initial={false}>
             {messages.map((m, i) => (
               <motion.div key={i}
@@ -322,6 +322,9 @@ export default function FrostPage() {
                 <div className="px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-line"
                   style={{
                     maxWidth: "78%",
+                    wordBreak: "break-word",
+                    overflowWrap: "break-word",
+                    display: "inline-block",
                     ...(m.role === "assistant"
                       ? { background: "rgba(83,74,183,0.14)", color: "var(--snow)", border: "1px solid rgba(83,74,183,0.22)", borderBottomLeftRadius: 4 }
                       : { background: "linear-gradient(135deg, var(--aurora), #6B5CE7)", color: "var(--snow)", borderBottomRightRadius: 4, boxShadow: "0 4px 20px rgba(83,74,183,0.3)" }),
