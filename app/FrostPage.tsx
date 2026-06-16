@@ -42,8 +42,7 @@ const QUESTIONS = [
   { phase: 4, key: "domain", text: "Perfect! Do you already have a domain name? (e.g. yourbusiness.com)\n\nAnd do you have hosting set up, or will you need that handled too?" },
   { phase: 4, key: "competitors", text: "Great! One thing that really helps us build a standout site — knowing who you're up against.\n\nWho are your main competitors online? Drop their URLs if you can. We'll make sure your site leaves them in the dust. 😎" },
   { phase: 4, key: "timeline", text: "Ha — noted! 😄\n\nWhat's your ideal timeline for launching the new site?\n\n→ ASAP — I needed this yesterday\n→ About 1 month\n→ 2–3 months\n→ No rush — I want it done right" },
-  { phase: 4, key: "budget", text: "Almost done, I promise! Just one more. 🙏\n\nWhat's your budget range for this project?\n\n→ Under $1,000\n→ $1,000 – $3,000\n→ $3,000 – $7,000\n→ $7,000+\n→ Not sure yet — open to a proposal\n\nNo wrong answer here — this just helps us put together the right recommendation for you." },
-  { phase: 4, key: "extra", text: (a: Record<string,string>) => `${a.name}, you've been amazing to chat with! 🧊✨\n\nLast thing — is there anything else you want the Market Open Media team to know? Any specific requests, things that are non-negotiable, or anything that didn't come up?\n\n(Or just say 'all good' and we're done!)` },
+{ phase: 4, key: "extra", text: (a: Record<string,string>) => `${a.name}, you've been amazing to chat with! 🧊✨\n\nLast thing — is there anything else you want the Market Open Media team to know? Any specific requests, things that are non-negotiable, or anything that didn't come up?\n\n(Or just say 'all good' and we're done!)` },
 ];
 
 // Service loop sub-steps
@@ -88,7 +87,6 @@ Content/Copy: ${answers.content || "—"}
 Domain/Hosting: ${answers.domain || "—"}
 Competitors: ${answers.competitors || "—"}
 Timeline: ${answers.timeline || "—"}
-Budget: ${answers.budget || "—"}
 Extra notes: ${answers.extra || "—"}
 
 ========================================
