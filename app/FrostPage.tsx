@@ -234,7 +234,7 @@ export default function BluPage() {
 
       {/* Background */}
       <div className="absolute inset-0 z-0">
-        <Image src="/ice-macro.png" alt="" fill className="object-cover opacity-10" />
+        <Image src="/background.png" alt="" fill className="object-cover opacity-100" />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 40%, rgba(83,74,183,0.18) 0%, transparent 70%)" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 40% at 20% 80%, rgba(93,202,165,0.08) 0%, transparent 60%)" }} />
       </div>
