@@ -94,6 +94,7 @@ Sent from Market Open Media — Blu intake page`.trim();
 }
 
 export default function BluPage() {
+  const [showIntro, setShowIntro] = useState(true);
   const [particles, setParticles] = useState<Particle[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -248,6 +249,68 @@ export default function BluPage() {
             transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: "easeInOut" }} />
         ))}
       </div>
+
+      {/* Intro screen */}
+      <AnimatePresence>
+        {showIntro && (
+          <motion.div
+            key="intro"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.5 }}
+            className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6"
+            style={{ background: "rgba(10,13,31,0.6)", backdropFilter: "blur(4px)" }}
+          >
+            {/* Video */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="rounded-full overflow-hidden"
+              style={{ width: 180, height: 180, border: "2px solid rgba(83,74,183,0.5)", boxShadow: "0 0 60px rgba(83,74,183,0.4)" }}
+            >
+              <video
+                src="/blu-intro.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            </motion.div>
+
+            {/* Name + tagline */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-center"
+            >
+              <h1 className="text-3xl font-bold mb-2" style={{ color: "var(--snow)" }}>Meet Blu</h1>
+              <p className="text-sm" style={{ color: "rgba(175,169,236,0.7)" }}>Your project guide at Market Open Media</p>
+            </motion.div>
+
+            {/* Start button */}
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => setShowIntro(false)}
+              className="px-10 py-4 rounded-full font-semibold text-base"
+              style={{
+                background: "linear-gradient(135deg, var(--aurora), #6B5CE7)",
+                color: "var(--snow)",
+                boxShadow: "0 0 40px rgba(83,74,183,0.5)",
+              }}
+            >
+              Let's get started →
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Chat card */}
       <motion.div
