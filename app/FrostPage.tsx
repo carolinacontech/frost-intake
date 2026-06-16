@@ -197,11 +197,16 @@ export default function FrostPage() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="relative z-10 flex flex-col w-full"
+        className="relative z-10 flex flex-col w-full mx-4"
         style={{
-          maxWidth: 600,
-          height: "100vh",
-          padding: "0",
+          maxWidth: 480,
+          height: "min(720px, 90vh)",
+          background: "rgba(10,13,31,0.85)",
+          border: "1px solid rgba(83,74,183,0.35)",
+          borderRadius: 24,
+          backdropFilter: "blur(24px)",
+          boxShadow: "0 40px 80px rgba(0,0,0,0.5), 0 0 60px rgba(83,74,183,0.12)",
+          overflow: "hidden",
         }}
       >
         {/* Top bar */}
