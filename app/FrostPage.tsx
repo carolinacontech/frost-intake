@@ -544,8 +544,8 @@ export default function BluPage() {
                 <div className="flex flex-col gap-1.5">
                   <p className="text-xs px-1" style={{ color: "rgba(175,169,236,0.5)" }}>{uploadHint}</p>
                   <div className="flex flex-wrap gap-1.5 items-center">
-                    {uploadedFiles.filter(f => f.label === (currentQ?.key === "logo" ? "Logo" : "Reference image")).map((f, _i) => (
-                      <div key={i} className="flex items-center gap-1 px-2 py-1 rounded-full text-xs"
+                    {uploadedFiles.filter(f => f.label === (currentQ?.key === "logo" ? "Logo" : "Reference image")).map((f) => (
+                      <div key={f.file.name} className="flex items-center gap-1 px-2 py-1 rounded-full text-xs"
                         style={{ background: "rgba(83,74,183,0.18)", color: "var(--aurora-light)", border: "1px solid rgba(83,74,183,0.3)", maxWidth: 160, overflow: "hidden" }}>
                         <span className="truncate">{f.file.name}</span>
                         <button onClick={() => removeFile(uploadedFiles.indexOf(f))}
