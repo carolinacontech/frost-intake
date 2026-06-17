@@ -55,7 +55,8 @@ const QUESTIONS = {
     { phase: 4, key: "domain", text: "Perfect! Do you already have a domain name? (e.g. yourbusiness.com)\n\nAnd do you have hosting set up, or will you need that handled too?" },
     { phase: 4, key: "competitors", text: "Great! Who are your main competitors online? Drop their URLs if you can.\n\nWe'll make sure your site leaves them in the dust. 😎" },
     { phase: 4, key: "timeline", text: "What's your ideal timeline for launching the new site?\n\n→ ASAP — I needed this yesterday\n→ About 1 month\n→ 2–3 months\n→ No rush — I want it done right" },
-    { phase: 4, key: "extra", text: (a: Record<string,string>) => `${a.name}, you've been amazing to chat with! 🌊✨\n\nLast thing — is there anything else you want the Market Open Media team to know? Any requests, non-negotiables, or anything that didn't come up?\n\n(Or just say 'all good' and we're done!)` },
+    { phase: 4, key: "extra", text: (a: Record<string,string>) => `${a.name}, you've been amazing to chat with! 🌊✨\n\nIs there anything else you want the Market Open Media team to know? Any requests, non-negotiables, or anything that didn't come up?\n\n(Or just say 'all good' and we're almost done!)` },
+    { phase: 4, key: "reference_files", text: "Last thing! 📎\n\nDo you have any reference images, inspiration screenshots, mockups, or any other file you'd like to share with our team?\n\nIf yes, use the upload button below to attach them. If not, just say 'no' and we're done!" },
   ],
   es: [
     { phase: 0, key: "name", text: "¡Hola! 👋 Soy Blu, tu guía de proyectos en Market Open Media.\n\nVoy a hacerte algunas preguntas para que nuestro equipo pueda crear algo increíble para tu negocio. ¡Solo toma unos minutos!\n\nEmpecemos — ¿cómo te llamas?" },
@@ -84,7 +85,8 @@ const QUESTIONS = {
     { phase: 4, key: "domain", text: "¡Perfecto! ¿Ya tienes un nombre de dominio? (ej: tunegocio.com)\n\n¿Y tienes hosting contratado, o necesitarás que lo manejemos también?" },
     { phase: 4, key: "competitors", text: "¡Genial! ¿Quiénes son tus principales competidores en línea? Comparte sus URLs si puedes.\n\nNos aseguraremos de que tu sitio los deje atrás. 😎" },
     { phase: 4, key: "timeline", text: "¿Cuál es tu plazo ideal para lanzar el nuevo sitio?\n\n→ Lo antes posible — lo necesitaba ayer\n→ En 1 mes\n→ En 2–3 meses\n→ Sin prisa — quiero que quede perfecto" },
-    { phase: 4, key: "extra", text: (a: Record<string,string>) => `¡${a.name}, ha sido un placer charlar contigo! 🌊✨\n\nÚltima pregunta — ¿hay algo más que quieras que sepa el equipo de Market Open Media? ¿Alguna solicitud especial, algo no negociable, o algo que no hayamos tocado?\n\n(¡O simplemente di 'todo bien' y terminamos!)` },
+    { phase: 4, key: "extra", text: (a: Record<string,string>) => `¡${a.name}, ha sido un placer charlar contigo! 🌊✨\n\n¿Hay algo más que quieras que sepa el equipo de Market Open Media? ¿Alguna solicitud especial, algo no negociable, o algo que no hayamos tocado?\n\n(¡O simplemente di 'todo bien' y casi terminamos!)` },
+    { phase: 4, key: "reference_files", text: "¡Última cosa! 📎\n\n¿Tienes imágenes de referencia, capturas de pantalla de inspiración, mockups, o cualquier otro archivo que quieras compartir con nuestro equipo?\n\nSi sí, usa el botón de abajo para adjuntarlos. ¡Si no, solo di 'no' y terminamos!" },
   ],
 };
 
@@ -130,7 +132,7 @@ const UI = {
     attachFiles: "📎 Attach files (optional)",
     attachedFiles: "Attached files:",
     logoHint: "You can attach your logo or brand files here",
-    imageryHint: "You can attach reference images or photos here",
+    referenceHint: "Attach any reference images, screenshots or files here",
   },
   es: {
     online: "En línea · Market Open Media",
@@ -148,7 +150,7 @@ const UI = {
     attachFiles: "📎 Adjuntar archivos (opcional)",
     attachedFiles: "Archivos adjuntos:",
     logoHint: "Puedes adjuntar tu logo o archivos de marca aquí",
-    imageryHint: "Puedes adjuntar imágenes de referencia o fotos aquí",
+    referenceHint: "Adjunta imágenes de referencia, capturas o archivos aquí",
   },
 };
 
@@ -195,6 +197,7 @@ Domain/Hosting: ${answers.domain || "—"}
 Competitors: ${answers.competitors || "—"}
 Timeline: ${answers.timeline || "—"}
 Extra notes: ${answers.extra || "—"}
+Reference files: ${answers.reference_files || "—"}
 
 ========================================
 Sent from Market Open Media — Blu intake page`.trim();
@@ -332,8 +335,8 @@ export default function BluPage() {
 
   const summary = buildSummary(answers);
 
-  const UPLOAD_KEYS = ["logo", "imagery"];
-  const uploadHint = currentQ?.key === "logo" ? ui?.logoHint : ui?.imageryHint;
+  const UPLOAD_KEYS = ["logo", "reference_files"];
+  const uploadHint = currentQ?.key === "logo" ? ui?.logoHint : ui?.referenceHint;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const label = currentQ?.key === "logo" ? "Logo" : "Reference image";
@@ -541,7 +544,7 @@ export default function BluPage() {
                 <div className="flex flex-col gap-1.5">
                   <p className="text-xs px-1" style={{ color: "rgba(175,169,236,0.5)" }}>{uploadHint}</p>
                   <div className="flex flex-wrap gap-1.5 items-center">
-                    {uploadedFiles.filter(f => f.label === (currentQ?.key === "logo" ? "Logo" : "Reference image")).map((f, i) => (
+                    {uploadedFiles.filter(f => f.label === (currentQ?.key === "logo" ? "Logo" : "Reference image")).map((f, _i) => (
                       <div key={i} className="flex items-center gap-1 px-2 py-1 rounded-full text-xs"
                         style={{ background: "rgba(83,74,183,0.18)", color: "var(--aurora-light)", border: "1px solid rgba(83,74,183,0.3)", maxWidth: 160, overflow: "hidden" }}>
                         <span className="truncate">{f.file.name}</span>
